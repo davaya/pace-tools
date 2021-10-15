@@ -1,0 +1,23 @@
+package: "http://example.org/pace/osquery-example"
+exports: ["AccountPolicyData", "Users"]
+
+AccountPolicyData = Record
+   1 uid Link(Users) // User ID
+   2 creation_time Number // When the account was first created
+   3 failed_login_count Integer // The number of failed login attempts
+   4 failed_login_timestamp Number // The time of the last failed login
+   5 password_last_set_time Number // The time the password was last changed
+
+Users = Record
+   1 uid Key(Integer)	// User ID
+   2 gid Integer // Group ID (unsigned)
+   3 uid_signed Integer // User ID as int64 signed (Apple)
+   4 gid_signed Integer // Default group ID as int64 signed (Apple)
+   5 username String // Username
+   6 description String // Optional user description
+   7 directory String // User's home directory
+   8 shell String // User's configured default shell
+   9 uuid String // User's UUID (Apple) or SID (Windows)
+  10 type String // Whether the account is roaming (domain), local, or a system profile
+  11 is_hidden Integer // IsHidden attribute set in OpenDirectory
+  12 pid_with_namespace Integer // Pids that contain a namespace
