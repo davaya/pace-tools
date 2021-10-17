@@ -1,0 +1,82 @@
+       title: "OpenC2 Actuator Profile for Security Posture Attribute Collection"
+     package: "https://oasis-open.org/oca/pace/pac/v1"
+ description: "Security posture attributes derived from OSQuery schema"
+  namespaces: {"ls": "https://oasis-open.org/openc2/oc2ls-types/v1.1"}
+     exports: ["AP-Target", "AP-Args", "AP-Specifiers", "AP-Results"]
+
+Action = Enumerated
+   3 query
+
+Target = Enumerated
+   9 features
+1030 pac
+
+Args = Enumerated
+   1 start_time
+1030 pac
+
+Actuator = Enumerated
+1030 pac
+
+Results = Enumerated
+   1 versions
+   2 profiles
+   3 pairs
+   4 rate_limit
+   5 args
+1030 pac
+
+Pairs = Enumerated
+   3 query: features, /attributes
+
+AP-Target = Choice                                     // Profile-defined targets
+   1 attributes ArrayOf(Enum[Attributes]) unique
+
+AP-Args = Map{1..*}                                    // Profile-defined command arguments
+   1 foo              String optional
+
+AP-Specifiers = Map                                    // Profile-defined actuator specifiers
+   1 foo              String optional
+
+AP-Results = Map{1..*}                                 // Profile-defined response results
+   1 attributes ArrayOf(Attributes)
+
+
+Attributes = Choice
+   1 os_version OS-Version
+   2 process_memory_map ProcessMemoryMap
+   3 uptime Uptime
+   4 users Users
+   5 account_policy_data AccountPolicyData
+
+OS-Version = Record
+
+ProcessMemoryMap = Record
+
+Uptime = Record
+   1 total_seconds Duration-Seconds
+
+Users = Record
+   1 uid Key(Integer)	// User ID
+   2 gid Integer // Group ID (unsigned)
+   3 uid_signed Integer // User ID as int64 signed (Apple)
+   4 gid_signed Integer // Default group ID as int64 signed (Apple)
+   5 username String // Username
+   6 description String // Optional user description
+   7 directory String // User's home directory
+   8 shell String // User's configured default shell
+   9 uuid String // User's UUID (Apple) or SID (Windows)
+  10 type String // Whether the account is roaming (domain), local, or a system profile
+  11 is_hidden Integer // IsHidden attribute set in OpenDirectory
+  12 pid_with_namespace Integer // Pids that contain a namespace
+
+AccountPolicyData = Record
+   1 uid Link(Users) // User ID
+   2 creation_time Timestamp-Float // When the account was first created
+   3 failed_login_count Integer // The number of failed login attempts
+   4 failed_login_timestamp Timestamp-Float // The time of the last failed login
+   5 password_last_set_time Timestamp-Float // The time the password was last changed
+
+Duration-Seconds = Integer{0..*}
+
+Timestamp-Float = Number
