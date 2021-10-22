@@ -11,6 +11,10 @@ OUTPUT_DIR = 'Out'
 
 
 def translate(filename: str, sdir: str, odir: str) -> NoReturn:
+    filepath = os.path.join(sdir, filename)
+    if os.path.isdir(filepath):
+        print(f'Skipping directory: {filename}')
+        return
     fn, ext = os.path.splitext(filename)
     try:
         loader = {
@@ -22,7 +26,7 @@ def translate(filename: str, sdir: str, odir: str) -> NoReturn:
         print(f'Unsupported schema format: {filename}')
         return
 
-    schema = loader(os.path.join(sdir, filename))
+    schema = loader(filepath)
     print(f'{filename:}:')
     print('\n'.join([f'{k:>15}: {v}' for k, v in jadn.analyze(jadn.check(schema)).items()]))
 
