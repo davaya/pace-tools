@@ -2,8 +2,27 @@
      package: "https://oasis-open.org/openc2/oc2ls/v1.1"
  description: "Template for creating OpenC2 v1.1 device schemas"
   namespaces: {"ls": "https://oasis-open.org/openc2/oc2ls-types/v1.1"}
-     exports: ["OpenC2-Command", "OpenC2-Response"]
+     exports: ["Message"]
      comment: "To use, delete unused Action/Target/Args/Results, update module, and assign id, name, and nsid for each profile"
+
+Message = Record
+   1 headers        Headers optional
+   2 body           Body
+   3 signature      String optional
+
+Headers = Map{1..*}
+   1 request_id     String optional
+   2 created        ls:Date-Time optional
+   3 from           String optional
+   4 to             String [0..*]
+
+Body = Choice                                       // Additional content types may be defined
+   1 openc2         OpenC2-Content
+
+OpenC2-Content = Choice
+   1 request        OpenC2-Command
+   2 response       OpenC2-Response
+   3 notification   OpenC2-Notification
 
 OpenC2-Command = Record                                // The Command defines an Action to be performed on a Target
    1 action           Action                           // The task or activity to be performed (i.e., the 'verb').
@@ -16,6 +35,8 @@ OpenC2-Response = Record
    1 status           ls:Status-Code                   // An integer status code.
    2 status_text      String optional                  // A free-form human-readable description of the Response status.
    3 results          Results optional                 // Map of key:value pairs that contain additional results based on the invoking Command.
+
+OpenC2-Notification = Record                           // Placeholder for actuator-specific notification payload, no OpenC2 baseline
 
 Action = Enumerated
    1 scan                                              // Systematic examination of some aspect of the entity or its environment.
