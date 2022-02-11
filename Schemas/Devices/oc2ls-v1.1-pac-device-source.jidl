@@ -1,9 +1,9 @@
        title: "OpenC2 Posture Attribute Collection Device/Service"
-     package: "https://oasis-open.org/openc2/oc2ls/v1.1"
- description: "Template for creating OpenC2 v1.1 device schemas"
+     package: "https://oasis-open.org/openc2/device/pac/v1.0"
+ description: "PAC device source schema"
   namespaces: {"ls": "https://oasis-open.org/openc2/oc2ls-types/v1.1", "pac": "https://oasis-open.org/oca/pace/pac/v1"}
      exports: ["Message"]
-     comment: "To use, delete unused Action/Target/Args/Results, update module, and assign id, name, and nsid for each profile"
+     comment: "To use, delete unused Action/Target/Args/Results, update package id, list profiles in namespaces"
 
 Message = Record
    1 headers        Headers optional
